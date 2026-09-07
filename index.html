@@ -1,35 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Account Alert</title>
-    <style>
-        body {
-            background: black;
-            color: white;
-            text-align: center;
-            font-family: Arial;
-            padding-top: 100px;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Alert</title>
 
-        h1 {
-            color: red;
-            font-size: 42px;
-        }
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+    padding-top: 70px;
+}
 
-        h2 {
-            font-size: 30px;
-        }
+.box {
+    width: 85%;
+    max-width: 450px;
+    margin: auto;
+    padding: 25px;
+    border: 2px solid red;
+    border-radius: 15px;
+    box-shadow: 0 0 25px red;
+}
 
-        p {
-            font-size: 25px;
-        }
-    </style>
+h1 {
+    color: red;
+    font-size: 35px;
+    animation: blink 1s infinite;
+}
+
+#status {
+    font-size: 22px;
+    margin: 25px;
+}
+
+.loader {
+    width: 100%;
+    height: 15px;
+    background: #333;
+    border-radius: 10px;
+}
+
+#bar {
+    width: 0%;
+    height: 15px;
+    background: red;
+    border-radius: 10px;
+}
+
+button {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 20px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+@keyframes blink {
+    50% { opacity: 0.4; }
+}
+</style>
 </head>
 
 <body>
-    <h1>🚨 ACCOUNT ALERT 🚨</h1>
-    <h2>Finish Your Account Balance</h2>
-    <p>🔓 Crack Your Account</p>
-    <p>⏳ Processing...</p>
+
+<div class="box">
+
+<h1>🚨 ACCOUNT ALERT 🚨</h1>
+
+<h2>Finish Your Account Balance</h2>
+
+<p>🔓 Crack Your Account</p>
+
+<div id="status">Ready to scan...</div>
+
+<div class="loader">
+    <div id="bar"></div>
+</div>
+
+<h2 id="percent">0%</h2>
+
+<button onclick="startScan()">START SCAN</button>
+
+</div>
+
+<script>
+
+function startScan() {
+
+    let progress = 0;
+
+    document.querySelector("button").style.display = "none";
+
+    let scan = setInterval(function() {
+
+        progress += 5;
+
+        document.getElementById("bar").style.width = progress + "%";
+        document.getElementById("percent").innerHTML = progress + "%";
+
+        if (progress >= 100) {
+
+            clearInterval(scan);
+
+            document.getElementById("status").innerHTML =
+            "⚠️ ACCESS DETECTED";
+
+        }
+
+    }, 300);
+}
+
+</script>
+
 </body>
-  </html>
+</html>
