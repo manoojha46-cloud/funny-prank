@@ -5,105 +5,216 @@
 <title>Account Alert</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    background: #050505;
+    background: #000;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
-    padding-top: 70px;
+    padding: 25px 15px;
 }
 
-.box {
-    width: 85%;
-    max-width: 450px;
-    margin: auto;
-    padding: 25px;
-    border: 2px solid red;
-    border-radius: 15px;
+.alert {
+    border: 3px solid red;
+    border-radius: 20px;
+    padding: 30px 15px;
     box-shadow: 0 0 25px red;
 }
 
 h1 {
     color: red;
-    font-size: 34px;
-    animation: blink 0.8s infinite;
+    font-size: 32px;
 }
 
-#status {
-    font-size: 22px;
-    margin: 25px 0;
+h2 {
+    font-size: 24px;
 }
 
-.loader {
-    width: 100%;
-    height: 18px;
-    background: #333;
-    border-radius: 10px;
+.crack {
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.scan {
+    margin-top: 35px;
+    font-size: 24px;
+}
+
+.progress-box {
+    width: 90%;
+    height: 22px;
+    background: #222;
+    border-radius: 20px;
+    margin: 20px auto;
     overflow: hidden;
 }
 
-#bar {
+.progress {
     width: 0%;
-    height: 18px;
+    height: 100%;
     background: red;
-    border-radius: 10px;
-    transition: width 0.3s;
+    box-shadow: 0 0 15px red;
+    transition: width 0.2s;
 }
 
-#percent {
+.percent {
+    color: red;
     font-size: 28px;
+    font-weight: bold;
 }
 
-@keyframes blink {
-    50% {
-        opacity: 0.4;
-    }
+.otp {
+    display: none;
+    margin: 35px auto;
+    max-width: 400px;
+    background: #171b24;
+    border: 2px solid #303746;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: left;
+    box-shadow: 0 0 20px #333;
+}
+
+.otp-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.otp-text {
+    font-size: 19px;
+    line-height: 1.5;
+    color: #ddd;
+}
+
+.code {
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+.success {
+    display: none;
+    margin: 25px auto;
+    border: 2px solid red;
+    border-radius: 15px;
+    padding: 20px;
+    color: red;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: 0 0 20px red;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="alert">
 
 <h1>🚨 ACCOUNT ALERT 🚨</h1>
 
 <h2>Finish Your Account Balance</h2>
 
-<p>🔓 Crack Your Account</p>
+<div class="crack">🔓 Crack Your Account</div>
 
-<div id="status">Scanning account...</div>
-
-<div class="loader">
-    <div id="bar"></div>
+<div class="scan" id="scanText">
+⏳ Scanning account...
 </div>
 
-<h2 id="percent">0%</h2>
+<div class="progress-box">
+    <div class="progress" id="progress"></div>
+</div>
 
+<div class="percent" id="percent">0%</div>
+
+</div>
+
+<div class="otp" id="otp">
+
+<div class="otp-title">
+📩 OTP Received
+</div>
+
+<div class="otp-text">
+Your OTP for account verification is
+<br><br>
+
+<span class="code">482913</span>
+
+<br><br>
+
+Do not share this with anyone.
+</div>
+
+</div>
+
+<div class="success" id="success">
+✓ OTP RECEIVED<br>
+<span style="font-size:16px;">Verification Successful...</span>
 </div>
 
 <script>
 
+function vibrate() {
+    if (navigator.vibrate) {
+        navigator.vibrate([300,100,300,100,500]);
+    }
+}
+
 let progress = 0;
 
-let scan = setInterval(function() {
+window.addEventListener("load", function() {
 
-    progress += 5;
+    vibrate();
 
-    document.getElementById("bar").style.width = progress + "%";
-    document.getElementById("percent").innerHTML = progress + "%";
+    let timer = setInterval(function() {
 
-    if (progress >= 100) {
+        progress++;
 
-        clearInterval(scan);
+        document.getElementById("progress").style.width =
+            progress + "%";
 
-        document.getElementById("status").innerHTML =
-        "⚠️ ACCESS DETECTED";
+        document.getElementById("percent").innerText =
+            progress + "%";
 
-    }
+        if (progress >= 100) {
 
-}, 300);
+            clearInterval(timer);
+
+            document.getElementById("scanText").innerText =
+                "🔐 Verification processing...";
+
+            setTimeout(function() {
+
+                document.getElementById("otp").style.display =
+                    "block";
+
+                vibrate();
+
+                setTimeout(function() {
+
+                    document.getElementById("success").style.display =
+                        "block";
+
+                    vibrate();
+
+                }, 2000);
+
+            }, 1000);
+        }
+
+    }, 80);
+
+});
+
+document.addEventListener("touchstart", function() {
+    vibrate();
+}, {once:true});
 
 </script>
 
